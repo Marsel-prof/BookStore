@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProjectMVC.Models;
 
 namespace ProjectMVC.Data
 {
@@ -9,5 +10,6 @@ namespace ProjectMVC.Data
             : base(options)
         {
         }
+        public DbSet<Category> Categories { get; set; }
     }
 }

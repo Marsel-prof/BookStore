@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ProjectMVC.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@if (!Model.Any())
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+        There are no Data.
+    </div>
+}
+else
+{
+<h1>All Categories</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Name
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+               Updated  On
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.CreatedOn
+            </td>
+            <td>
+                @item.UpdatedOn
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondery">Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
