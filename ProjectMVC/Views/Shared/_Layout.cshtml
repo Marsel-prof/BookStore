@@ -15,6 +15,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="~/Dashboard/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
     <link rel="stylesheet" href="~/Dashboard/dist/css/adminlte.min.css">
+  <!-- custom css -->
+    <link rel="stylesheet" href="~/Dashboard/dist/css/main.css">
+    <link rel="stylesheet" href="~/Dashboard/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -227,11 +230,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
            <li class="nav-item">
-              <a href="categories/index" class="nav-link">
+              <a asp-controller="Categories" asp-action="Index" class="nav-link">
                  <i class="nav-icon fas fa-th"></i>
                    <p>
                         Category
-                        <span class="right badge badge-danger">New</span>
+                       
+                   </p>
+              </a>
+           </li>
+           <li class="nav-item">
+              <a asp-controller="Authors" asp-action="Index" class="nav-link">
+                 <i class="nav-icon fas fa-th"></i>
+                   <p>
+                        Author
+                       
                    </p>
               </a>
            </li>
@@ -249,7 +261,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
+            <h1 class="m-0">@RenderSection("Title")</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -268,8 +280,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="row">
             <div class="col-12">
                 <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h5 class="m-0">Featured</h5>
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="m-0">@RenderSection("SubTitle",false)</h5>
+                        @RenderSection("Buttons",false)
                     </div>
                     <div class="card-body">
                         @RenderBody()
@@ -314,5 +327,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="~/Dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
     <script src="~/Dashboard/dist/adminlte.min.js"></script>
+    <script src="~/Dashboard/plugins/sweetalert2/sweetalert2.min.js"></script>
+    @RenderSection("Scripts",false)
 </body>
 </html>

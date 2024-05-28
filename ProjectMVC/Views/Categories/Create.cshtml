@@ -1,0 +1,33 @@
+﻿@model ProjectMVC.ViewModels.CategoryVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Title {Categories}
+@section SubTitle{
+    @(Model?.Id ==null ? "Create" : "Edit")
+    @*update معناها انا بدي اعدل داتا ف رح يخلي التايتل id اذا كان جاي مع الموديل if هيك انا عملت جملة *@
+}
+<form asp-controller="Categories">
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>    
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary">
+           @if(Model?.Id == null)
+            {
+                <i class='fas fa-plus-circle'>ADD</i>
+            }
+            else
+            {
+                <i class='far fa-edit'>UPDATE</i>
+            }
+        </button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-alt-circle-left"></i> Back to List</a>
+    </div>
+</form>
