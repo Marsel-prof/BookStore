@@ -1,0 +1,40 @@
+﻿@model ProjectMVC.ViewModels.Author.AuthorFormVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Title {
+Authors
+}
+@section SubTitle {
+    @(Model?.Id == null ? "Create" : "Edit")
+   
+}
+<form asp-controller="Authors" class="form">
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary btn-js">
+            @section Scripts {
+                <script>
+                    var result = document.querySelector(".form").getAttribute("action");
+                    console.log(result);
+                    if (result == "/Authors/Create") {
+                        document.querySelector(".btn-js").innerHTML = "<i class='fas fa-plus-circle' > ADD </i>"
+                    }
+                    else {
+                        document.querySelector(".btn-js").innerHTML = "<i class='far fa-edit' > UPDATE </i>"
+                    }
+                   
+                </script>
+            }
+        </button>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-alt-circle-left"></i> Back to List</a>
+    </div>
+</form>

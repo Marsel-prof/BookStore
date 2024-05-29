@@ -11,8 +11,17 @@ namespace ProjectMVC.Data
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<BookCategory>().HasKey(e => new
+            {
+                e.CategoryId,
+                e.BookId
+            });
+            base.OnModelCreating(builder);
+        }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<ProjectMVC.ViewModels.Author.AuthorVM> AuthorVM { get; set; } = default!;
+        
     }
 }
