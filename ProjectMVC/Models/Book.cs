@@ -17,7 +17,7 @@
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime? UpdatedAt { set; get; } = DateTime.Now;
+        public DateTime UpdatedAt { set; get; } = DateTime.Now;
         public List<BookCategory> Categories { get; set; } = new List<BookCategory>();
     }
 }

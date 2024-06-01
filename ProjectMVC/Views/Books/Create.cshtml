@@ -1,0 +1,56 @@
+﻿@model ProjectMVC.ViewModels.Book.BookFormVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Title {
+Books
+}
+@section SubTitle {
+    Create
+}           @*enctype="multipart/form-data دائما لما يكون عندي بالفورم تاعي فايل ضروري نعمل *@
+<form asp-controller="Books" asp-action="Create" enctype="multipart/form-data">
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AuthorId"></label> 
+            <select asp-for="AuthorId" class="form-control" asp-items="@Model.Authors"></select>
+            <span asp-validation-for="AuthorId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Publisher"></label>
+            <input type="text" asp-for="Publisher" class="form-control" />
+            <span asp-validation-for="Publisher" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PublishDate"></label>
+            <input type="date" asp-for="PublishDate" class="form-control" />
+            <span asp-validation-for="PublishDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl"></label>
+            <input type="file" asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SelectCategories"></label> 
+            <select asp-for="SelectCategories" class="form-control" asp-items="@Model.Categories"></select>
+            <span asp-validation-for="SelectCategories" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="card-footer"> 
+        <button type="submit" class="btn btn-primary"> Add </button>
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-alt-circle-left"></i> Back to List</a>
+    </div>
+</form>

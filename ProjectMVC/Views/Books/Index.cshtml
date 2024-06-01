@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ProjectMVC.ViewModels.Book.BookVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Title {
+Books
+}
+
+@section SubTitle {
+Show
+}
+@section Buttons {
+    <a asp-controller="Books" asp-action="Create" class="btn btn-primary">Create</a>
+}
+@if(!Model.Any())
+{
+    <div class="card-body">
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+            There are no Data.
+        </div>
+    </div>
+}
+else
+{
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th> Author </th>
+                    <th>Publisher</th>
+                    <th>Publish Date</th>
+                    <th> image </th>
+                    <th> Categories</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @item.Authors
+                        </td>
+                        <td>
+                            @item.Publisher
+                        </td>
+                        <td>
+                            @item.PublishDate
+                        </td>
+                        <td>
+                            <img src="~/img/books/@item.ImageUrl" width="50px" height="50px" alt="no image"/>
+                        </td>
+                        <td>@string.Join(",",item.Categories)</td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-plus-square"></i> Details</a>
+                            <a class="btn btn-danger js-delete" asp-action="Delete" asp-controller="Books" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i> Delete</a>
+                        </td>       @* وبمسك التاغ من خلال الكلاس  id برجعلي data-id واعمل اتريبيوت من عندي اسمه  href=# رح اخلي التاغ *@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
