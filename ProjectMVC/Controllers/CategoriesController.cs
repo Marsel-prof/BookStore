@@ -14,7 +14,15 @@ namespace ProjectMVC.Controllers
         }
         public IActionResult Index()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _context.Categories
+                .Select(category => new CategoryVM
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    UpdatedOn = category.UpdatedOn,
+                    CreatedOn = category.CreatedOn
+                })
+                .ToList();
             return View(categories);
         }
 

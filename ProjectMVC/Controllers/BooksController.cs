@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.ContentModel;
 using NuGet.Protocol;
 using ProjectMVC.Data;
 using ProjectMVC.Data.Migrations;
@@ -44,31 +45,26 @@ namespace ProjectMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var authors = _context.Authors.OrderBy(author => author.Name).ToList();
-            var authorList = new List<SelectListItem>();
-            foreach (var author in authors)
-            {
-                authorList.Add(new SelectListItem
+            var authors = _context.Authors.OrderBy(author => author.Name)
+                .Select(author => new SelectListItem
                 {
                     Value = author.Id.ToString(),
-                    Text = author.Name,
-                });
-            }
+                    Text = author.Name
+                })
+                .ToList();
            
-            var categories = _context.Categories.OrderBy(category => category.Name).ToList();
-            var categoryList = new List<SelectListItem>();
-            foreach (var category in categories)
-            {
-                categoryList.Add(new SelectListItem
+            var categories = _context.Categories.OrderBy(category => category.Name)
+                .Select(category => new SelectListItem
                 {
                     Value = category.Id.ToString(),
-                    Text = category.Name,
-                });
-            }
+                    Text = category.Name
+                })
+                .ToList();
+          
             var ViewModle = new BookFormVM
             {
-                Authors = authorList,
-                Categories = categoryList,
+                Authors = authors,
+                Categories = categories,
             };
             return View(ViewModle);
         }
@@ -81,16 +77,13 @@ namespace ProjectMVC.Controllers
             }
             string? fileName = null;
             if (bookFormVM.ImageUrl != null)
-            {// path.getfilename اول اشي بدي اجيب اسم الصورة من خلال شيء جاهز اسمه 
+            {
                  fileName = Path.GetFileName(bookFormVM.ImageUrl.FileName);
-                // wwwroot هون بدي احدد المكان الي بدي اخزن الصورة فيه من خلال انتر فيس بخليني اقدر اوصل ل 
-                //وبحكيلو انو انا رح اخزن الاسم تاع الاصورة 
                 var pathFile = Path.Combine($"{webHostEnvironment.WebRootPath}/img/books",fileName);
-                // هاد السطر عبارة عن تعامل مع الفايلات زي باقي لغات البرمجة 
-                // فهون انا بنشئ مكان جوا الباث الي انا جبتوا عشان اخزن الصورة فيه
-                var stream = System.IO.File.Create(pathFile);
-                // هون بجيب الصورة من المكان المؤقت الي كانت مخزنة فيه وبنسخها جوا الباث وهيك بكون تخزنت عندي
-                bookFormVM.ImageUrl.CopyTo(stream);
+                using (var stream = new FileStream(pathFile, FileMode.Create))
+                {
+                    bookFormVM.ImageUrl.CopyTo(stream);
+                }
             }
             var Books = new Book
             {
@@ -114,17 +107,31 @@ namespace ProjectMVC.Controllers
         public IActionResult Delete(int id)
         {
             var book = _context.Books.Find(id);
-            if(book == null) { return NotFound(); }
-            // لما احذف كتاب لازم احذف الصورة معه عشان هيك بجيب الباث 
-            var path = Path.Combine(webHostEnvironment.WebRootPath, "img/books", book.ImageUrl);
-            if(System.IO.File.Exists(path))// بفحص اذا الباث موجود بحذفه
+            if (book == null)
             {
-                System.IO.File.Delete(path);
+                return NotFound();
             }
+
+            var path = Path.Combine(webHostEnvironment.WebRootPath, "img/books", book.ImageUrl);
+            if (System.IO.File.Exists(path))
+            {
+                try
+                {
+                    System.IO.File.Delete(path);
+                }
+                catch (IOException ex)
+                {
+                    // Log the exception and provide feedback
+                    Console.WriteLine($"IOException: {ex.Message}");
+                    return StatusCode(500, "Error deleting file. Please try again later.");
+                }
+            }
+
             _context.Books.Remove(book);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok();
         }
+
     }
-   
+
 }
