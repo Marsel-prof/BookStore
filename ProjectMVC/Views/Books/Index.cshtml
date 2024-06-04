@@ -18,7 +18,7 @@ Show
     <div class="card-body">
         <div class="alert alert-warning alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> warnning!</h5>
             There are no Data.
         </div>
     </div>
@@ -26,7 +26,12 @@ Show
 else
 {
     <div class="card-body">
-        <table class="table">
+        <div class="alert alert-warning alert-dismissible js-alert" hidden>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> warnning!</h5>
+            There are no Data.
+        </div>
+        <table class="table js-table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -93,6 +98,10 @@ else
                         });
 
                         if (response.ok) {
+                            if (document.querySelectorAll('.js-delete').length == 1) {
+                                document.querySelector('.js-table').setAttribute('hidden', '')
+                                document.querySelector('.js-alert').removeAttribute('hidden')
+                            }
                             btn.closest('tr').remove();
 
                             const Toast = Swal.mixin({
